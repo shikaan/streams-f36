@@ -1,5 +1,14 @@
 import React from 'react';
-import {Card, Heading, Paragraph} from "@contentful/forma-36-react-components";
+import {
+  Card,
+  EmptyState,
+  Heading,
+  Paragraph,
+  SkeletonBodyText,
+  SkeletonContainer,
+  SkeletonDisplayText,
+  SkeletonImage
+} from "@contentful/forma-36-react-components";
 import {Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 import {Dataset} from "../../http/stats";
@@ -8,7 +17,7 @@ function ingestData(datasets: Dataset[], metricsType: string): any[] {
   const result: any[] = [];
 
   datasets.forEach(dataset => {
-    if (!dataset) return;
+    if (!dataset || !dataset.metadata || !dataset.data) return;
 
     const newEntry = {
       date: new Date(dataset.metadata.date).toLocaleTimeString()
@@ -29,10 +38,28 @@ function ingestData(datasets: Dataset[], metricsType: string): any[] {
 interface GraphProps {
   data: Array<Dataset>,
   activeMetricsType: string,
-  content: any
+  content: any,
+  isLoading?: boolean,
+  isEmpty?: boolean
 }
 
-const Graph = ({data, activeMetricsType, content}: GraphProps) => {
+const Loading = () => (
+  <Card>
+    <SkeletonContainer>
+      <SkeletonDisplayText numberOfLines={1}/>
+      <SkeletonBodyText numberOfLines={1} offsetTop={35}/>
+      <SkeletonImage offsetTop={70} width={720} height={300}/>
+    </SkeletonContainer>
+  </Card>
+);
+
+const Empty = () => <EmptyState descriptionProps={{text: 'Unable to fetch graph'}} headingProps={{text: 'Whoops'}}/>;
+
+const Graph = ({data, activeMetricsType, content, isLoading, isEmpty}: GraphProps) => {
+
+  if (isEmpty && !isLoading) return <Empty/>;
+  if (isLoading) return <Loading/>;
+
   const parsedData = ingestData(data, activeMetricsType);
   const lines = data[data.length - 1].data ? Object.keys(data[data.length - 1].data) : [];
 

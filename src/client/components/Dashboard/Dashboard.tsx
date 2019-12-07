@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Workbench from "@contentful/forma-36-react-components/dist/components/Workbench/Workbench";
-import {EmptyState, Illustration} from "@contentful/forma-36-react-components";
+import {Illustration} from "@contentful/forma-36-react-components";
 
 import {pushift} from "../../utils";
 import {CONTENT_TYPE, DATASET_SIZE, MetricsType} from "./constants";
@@ -34,7 +34,7 @@ const fetchContent = async (client: ContentfulClientApi, setContent: Function) =
 
   const result = {};
 
-  for (const item of items as Array<{fields: GraphContent}>) {
+  for (const item of items as Array<{ fields: GraphContent }>) {
     result[item.fields.reference] = item.fields
   }
 
@@ -47,6 +47,9 @@ const Dashboard = ({statsClient = StatsHTTPClient.getInstance(), contentfulClien
   const [isLoadingDatasets, setIsLoadingDatasets] = useState(false);
   const [content, setContent] = useState<any>();
   const [isLoadingContent, setIsLoadingContent] = useState(false);
+
+  // Stripping out undefined elements
+  const datasetRealLength = datasets.filter(i => i).length;
 
   useEffect(() => {
     if (!isLoadingDatasets && !datasets.length) {
@@ -62,6 +65,10 @@ const Dashboard = ({statsClient = StatsHTTPClient.getInstance(), contentfulClien
     }
   }, [content, datasets]);
 
+  // Don't show the graph with only one dataset
+  const isGraphEmpty = datasetRealLength < 2;
+  const isGraphLoading = isLoadingContent || (isLoadingDatasets && isGraphEmpty);
+
   return (
     <Workbench>
       <Workbench.Header
@@ -72,10 +79,15 @@ const Dashboard = ({statsClient = StatsHTTPClient.getInstance(), contentfulClien
         <Sidebar metricsType={metricsType} setActiveMetricsType={setActiveMetricsType}/>
       </Workbench.Sidebar>
       <Workbench.Content>
-        {datasets.length
-          ? <Graph data={datasets} activeMetricsType={metricsType} content={content}/>
-          : <EmptyState headingProps={{text: 'Empty'}} descriptionProps={{text: 'LOL'}}/>
-        }
+
+        <Graph
+          data={datasets}
+          activeMetricsType={metricsType}
+          content={content}
+          isLoading={isGraphLoading}
+          isEmpty={isGraphEmpty}
+        />
+
       </Workbench.Content>
     </Workbench>
   );
