@@ -24,10 +24,10 @@ export default class StatsHTTPClient {
   private static INSTANCE: StatsHTTPClient;
 
   static getInstance(baseURL?: string) {
-    if (StatsHTTPClient.INSTANCE) {
-      return StatsHTTPClient.INSTANCE
+    if (!StatsHTTPClient.INSTANCE) {
+      StatsHTTPClient.INSTANCE = new StatsHTTPClient(baseURL)
     }
-    return new StatsHTTPClient(baseURL)
+    return StatsHTTPClient.INSTANCE
   }
 
   private readonly baseURL: string;

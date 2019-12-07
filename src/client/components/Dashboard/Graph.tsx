@@ -1,7 +1,8 @@
 import React from 'react';
-import {Card, Heading} from "@contentful/forma-36-react-components";
-import {Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
-import {Dataset} from './Dashboard';
+import {Card, Heading, Paragraph} from "@contentful/forma-36-react-components";
+import {Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+
+import {Dataset} from "../../http/stats";
 
 function ingestData(datasets: Dataset[], metricsType: string): any[] {
   const result: any[] = [];
@@ -10,7 +11,7 @@ function ingestData(datasets: Dataset[], metricsType: string): any[] {
     if (!dataset) return;
 
     const newEntry = {
-      name: new Date(dataset.metadata.date).toLocaleTimeString()
+      date: new Date(dataset.metadata.date).toLocaleTimeString()
     };
 
     const items = Object.keys(dataset.data);
@@ -27,29 +28,34 @@ function ingestData(datasets: Dataset[], metricsType: string): any[] {
 
 interface GraphProps {
   data: Array<Dataset>,
-  activeMetricsType: string
+  activeMetricsType: string,
+  content: any
 }
 
-const OPTIONS = {
-  ['percentage']: {
-    domain: [0, 100]
-  }
-};
-
-const Graph = ({data, activeMetricsType}: GraphProps) => {
+const Graph = ({data, activeMetricsType, content}: GraphProps) => {
   const parsedData = ingestData(data, activeMetricsType);
   const lines = data[data.length - 1].data ? Object.keys(data[data.length - 1].data) : [];
-  const options = OPTIONS[activeMetricsType] || {};
 
   return (
     <Card>
       <Heading element="h2">
-        {activeMetricsType}
+        {content && content[activeMetricsType] ? content[activeMetricsType].title : activeMetricsType}
       </Heading>
+      <Paragraph>
+        {content && content[activeMetricsType] && content[activeMetricsType].description}
+      </Paragraph>
       <ResponsiveContainer height={300} width="100%">
-        <AreaChart data={parsedData}>
-          <XAxis dataKey="name"/>
-          <YAxis {...options}/>
+        <AreaChart
+          data={parsedData}
+          margin={{
+            // TODO: use tokens
+            top: 30,
+            right: 50,
+            bottom: 30,
+            left: 0
+          }}>
+          <XAxis dataKey="date"/>
+          <YAxis/>
           <Tooltip isAnimationActive={false}/>
           {
             lines.map(dataKey => <Area type="step" key={dataKey} isAnimationActive={false} dataKey={dataKey}/>)
@@ -61,3 +67,4 @@ const Graph = ({data, activeMetricsType}: GraphProps) => {
 };
 
 export default Graph;
+// TODO: use tokens

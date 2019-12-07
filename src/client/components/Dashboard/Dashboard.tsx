@@ -3,11 +3,13 @@ import Workbench from "@contentful/forma-36-react-components/dist/components/Wor
 import {EmptyState, Illustration} from "@contentful/forma-36-react-components";
 
 import {pushift} from "../../utils";
-import {DATASET_SIZE, MetricsType} from "./constants";
+import {CONTENT_TYPE, DATASET_SIZE, MetricsType} from "./constants";
 
 import Graph from './Graph';
 import Sidebar from "./Sidebar";
 import StatsHTTPClient, {Dataset} from "../../http/stats";
+import ContentfulHTTPClient from "../../http/contentful";
+import {ContentfulClientApi} from "contentful";
 
 const fetchStats = async (client: StatsHTTPClient, datasets: Array<Dataset>, setDatasets: Function) => {
   // We cannot access the updated datasets upon every setDataset
@@ -21,15 +23,44 @@ const fetchStats = async (client: StatsHTTPClient, datasets: Array<Dataset>, set
   }
 };
 
-const Dashboard = ({statsClient = StatsHTTPClient.getInstance()}) => {
+interface GraphContent {
+  title: string,
+  description: string,
+  reference: MetricsType
+}
+
+const fetchContent = async (client: ContentfulClientApi, setContent: Function) => {
+  const {items} = await client.getEntries({content_type: CONTENT_TYPE});
+
+  const result = {};
+
+  for (const item of items as Array<{fields: GraphContent}>) {
+    result[item.fields.reference] = item.fields
+  }
+
+  setContent(result)
+};
+
+const Dashboard = ({statsClient = StatsHTTPClient.getInstance(), contentfulClient = ContentfulHTTPClient.getInstance()}) => {
   const [metricsType, setActiveMetricsType] = useState(MetricsType.Percentage);
   const [datasets, setDatasets] = useState<Array<Dataset>>([]);
+  const [isLoadingDatasets, setIsLoadingDatasets] = useState(false);
+  const [content, setContent] = useState<any>();
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
 
   useEffect(() => {
-    if (!datasets.length) {
-      fetchStats(statsClient, datasets, setDatasets);
+    if (!isLoadingDatasets && !datasets.length) {
+      setIsLoadingDatasets(true);
+      fetchStats(statsClient, datasets, setDatasets)
+        .then(() => setIsLoadingDatasets(false))
     }
-  }, [datasets]);
+
+    if (!isLoadingContent && !content) {
+      setIsLoadingContent(true);
+      fetchContent(contentfulClient, setContent)
+        .then(() => setIsLoadingContent(false))
+    }
+  }, [content, datasets]);
 
   return (
     <Workbench>
@@ -42,7 +73,7 @@ const Dashboard = ({statsClient = StatsHTTPClient.getInstance()}) => {
       </Workbench.Sidebar>
       <Workbench.Content>
         {datasets.length
-          ? <Graph data={datasets} activeMetricsType={metricsType}/>
+          ? <Graph data={datasets} activeMetricsType={metricsType} content={content}/>
           : <EmptyState headingProps={{text: 'Empty'}} descriptionProps={{text: 'LOL'}}/>
         }
       </Workbench.Content>
