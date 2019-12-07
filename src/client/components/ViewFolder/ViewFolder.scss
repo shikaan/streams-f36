@@ -1,0 +1,78 @@
+/* TODO: understand wtf is wrong with webstorm here */
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-base.css";
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-stack.css";
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-weight.css";
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-size.css";
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/letter-spacing.css";
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/spacing.css";
+
+/* TODO: use variables */
+
+.ViewFolder {
+  &:first-child {
+    .ViewFolder__header {
+      border-top: 0;
+    }
+  }
+}
+
+.ViewFolder__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  border-top: 1px solid var(--color-element-light);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+
+  font-family: var(--font-stack-primary);
+  font-weight: var(--font-weight-demi-bold);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-default);
+  text-rendering: optimizeLegibility;
+  margin: 0;
+}
+
+.ViewFolder__title {
+  max-width: 85%;
+  padding: 20px 3px;
+  word-wrap: break-word;
+}
+
+.ViewFolder__list {
+  min-height: 2px;
+  margin: 0 -1.5rem 10px;
+}
+
+.ViewFolder__item {
+  display: flex;
+  justify-content: space-between;
+  /* Definitely not pixel perfect. Use variables or make it perfect? */
+  padding: var(--spacing-s) var(--spacing-l);
+  margin: 0;
+  border: 1px solid transparent;
+  cursor: pointer;
+  /* Definitely not pixel perfect. Use variables or make it perfect? */
+  line-height: var(--line-height-condensed);
+
+  &:hover {
+    background-color: #d3dce0;
+  }
+
+  &--active {
+    border-radius: 3px;
+    background-color: #e5ebed;
+
+    .ViewFolder__item-title {
+      font-weight: bold;
+    }
+  }
+
+  .ViewFolder__item-title {
+    color: #2a3039;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
