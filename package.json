@@ -5,7 +5,7 @@
   "main": "src/server/index.js",
   "scripts": {
     "start": "run-p start:client start:server",
-    "start:client": "parcel serve --no-cache index.html",
+    "start:client": "parcel serve --no-cache --port 8080 static/index.html",
     "start:server": "damien ./src/server/index.js"
   },
   "author": "",
