@@ -7,13 +7,32 @@ class StatsController {
   constructor(service) {
     this.service = service;
     this.outputStream = new Readable({
-      read(){}
+      read() {
+      }
     });
   }
 
   getCPUDataStream() {
+    let lastData = null;
     setInterval(async () => {
-      this.outputStream.push(JSON.stringify(await this.service.fetchCurrentCPUData()))
+      const metadata = {date: new Date().toISOString()};
+      const newData = await this.service.fetchCurrentCPUData();
+
+      const data = {};
+
+      if (lastData) {
+        for (const [label, item] of Object.entries(newData)) {
+          data[label] = {
+            ...item,
+            percentage: item.getPercentage(lastData[label]),
+            idle: item.getIdle(),
+            nonIdle: item.getNonIdle()
+          }
+        }
+
+        this.outputStream.push(JSON.stringify({data, metadata}))
+      }
+      lastData = newData;
     }, StatsController.REFRESH_RATE);
 
     return this.outputStream;
@@ -21,6 +40,6 @@ class StatsController {
 }
 
 StatsController.ROUTE_MATCHER = /stats/;
-StatsController.REFRESH_RATE = 1000;
+StatsController.REFRESH_RATE = 2000;
 
 exports.StatsController = StatsController;

@@ -1,10 +1,7 @@
-const {StaticController} = require("./www/static.controller");
 const {createServer} = require('http');
 
 const {StatsController} = require("./api/stats.controller");
 const {StatsService} = require("./api/stats.service");
-
-const {DashboardController} = require("./www/dashboard.controller");
 
 const getSend = (request, response) => (status, message, contentType = 'text/plain') => {
   response.writeHead(status, message, {'Content-Type': contentType});
@@ -31,39 +28,22 @@ const statsService = new StatsService();
 const statsController = new StatsController(statsService);
 
 /**
- * Dashboard Module Initialization
- */
-const dashboardController = new DashboardController();
-
-/**
- * Static Module Initialization
- */
-const staticController = new StaticController();
-
-/**
  * @type {Server}
  */
 const server = createServer((request, response) => {
   const send = getSend(request, response);
 
+  // ALLOW CORS
+  if (request.headers.origin) {
+    response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+  }
+
   if (request.url.match(StatsController.ROUTE_MATCHER)) {
     const stream = statsController.getCPUDataStream();
 
-    stream.pipe(response);
-  } else if (request.url.match(DashboardController.ROUTE_MATCHER)) {
-    const stream = dashboardController.fetchIndex();
-
-    stream.pipe(response)
-  } else if (request.url.match(StaticController.ROUTE_MATCHER)) {
-    staticController
-      .fetch(request.url)
-      .then(stream => stream.pipe(response))
-      .catch(error => {
-        if (error.code === 'ENOENT') {
-          return send(404, 'Not Found')
-        }
-        send(500, error.message)
-      })
+    stream
+      .pipe(response)
+      .on('error', errorHandler(request, response))
   } else {
     send(404, 'Not Found')
   }

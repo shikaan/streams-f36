@@ -19,6 +19,16 @@ class Stats {
   getIdle() {
     return this.idle + this.iowait
   }
+
+  getTotal() {
+    return this.getIdle() + this.getNonIdle()
+  }
+
+  getPercentage(previous) {
+    const totalDifference = this.getTotal() - previous.getTotal();
+    const idleDifference = this.getIdle() - previous.getIdle();
+    return Math.round(100*(totalDifference - idleDifference)/totalDifference);
+  }
 }
 
 exports.Stats = Stats;

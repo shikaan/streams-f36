@@ -1,13 +1,12 @@
 const {createReadStream} = require('fs');
 const {createInterface} = require('readline');
-const {Readable} = require('stream');
 
 const {Stats} = require("./stats.model");
 
 class StatsService {
   fetchCurrentCPUData() {
     return new Promise((resolve, reject) => {
-      const readStream = createReadStream('/proc/stat', {autoClose: true, encoding: 'utf-8'})
+      const readStream = createReadStream(`/proc/stat`, {autoClose: true, encoding: 'utf-8', flags: 'rs'});
 
       const readLine = createInterface({
         input: readStream
@@ -17,7 +16,7 @@ class StatsService {
 
       readLine
         .on('line', line => {
-          const isCPULine = line.startsWith('cpu');
+          const isCPULine = (/^cpu(\d+)/).test(line);
 
           if (isCPULine) {
             const [label, ...params] = line.split(/\s/);
