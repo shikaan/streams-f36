@@ -4,21 +4,35 @@
   "description": "",
   "main": "src/server/index.js",
   "scripts": {
-    "start": "npm-run-all start:*",
-    "start:client": "parcel watch index.html",
-    "start:server": "damien ."
+    "start": "run-p start:client start:server",
+    "start:client": "parcel serve --no-cache index.html",
+    "start:server": "damien ./src/server/index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "damien": "^1.0.1",
+    "@types/classnames": "^2.2.9",
+    "@types/node": "^12.12.14",
+    "@types/react": "^16.9.15",
+    "@types/recharts": "^1.8.3",
+    "autoprefixer": "^9.7.3",
+    "damien": "^1.0.3",
     "npm-run-all": "^4.1.5",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "postcss-modules": "^1.4.1",
+    "sass": "^1.23.7",
+    "typescript": "^3.7.3"
   },
   "dependencies": {
     "@contentful/forma-36-fcss": "0.0.32",
     "@contentful/forma-36-react-components": "^3.24.0",
+    "@contentful/forma-36-tokens": "^0.4.5",
+    "classnames": "^2.2.6",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  }
+    "react-dom": "^16.12.0",
+    "recharts": "^2.0.0-beta.1"
+  },
+  "browserslist": [
+    "> 5%"
+  ]
 }
