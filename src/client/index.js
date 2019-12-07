@@ -1,14 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const root = document.getElementById('app');
+import App from './App'
 
-const App = () => {
-  return (
-    <h1>
-      App
-    </h1>
-  )
-};
+const root = document.getElementById('app');
 
 ReactDOM.render(<App/>, root);

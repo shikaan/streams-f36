@@ -1,0 +1,34 @@
+@import '../../node_modules/@contentful/forma-36-tokens/dist/css/index.css';
+@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-base.css";
+@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-stack.css";
+@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/line-height.css";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-stack-primary);
+    font-weight: var(--font-weight-normal);
+    font-size: 14px;
+    /* Definitely not pixel perfect. Use variables or make it perfect? */
+    line-height: var(--line-height-default);
+    margin: 0;
+    min-width: 1280px;
+}
+
+pre {
+    margin: 0;
+    white-space: normal;
+}
+
+ul, ol {
+    margin: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
