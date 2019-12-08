@@ -1,0 +1,24 @@
+@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/spacing";
+
+.MainTemplate {
+  --top-bar-height: var(--spacing-4xl);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  min-width: 1024px;
+
+  &__top-bar {
+    min-height: var(--top-bar-height);
+    height: var(--top-bar-height);;
+  }
+
+  &__page-wrapper {
+    flex: 1 1 auto;
+    position: relative;
+    height: calc(100% - var(--top-bar-height));
+  }
+}

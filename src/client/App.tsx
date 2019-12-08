@@ -4,10 +4,10 @@ import '@contentful/forma-36-fcss/dist/styles.css';
 import '@contentful/forma-36-react-components/dist/styles.css';
 import './App.css'
 
-import Template from "./components/Template";
+import MainTemplate from "./components/MainTemplate/MainTemplate";
 
 export default () => {
   return (
-      <Template/>
+      <MainTemplate/>
   )
 }

@@ -56,12 +56,14 @@ const Dashboard = ({statsClient = StatsHTTPClient.getInstance(), contentfulClien
       setIsLoadingDatasets(true);
       fetchStats(statsClient, datasets, setDatasets)
         .then(() => setIsLoadingDatasets(false))
+        .catch(() => setIsLoadingDatasets(false))
     }
 
     if (!isLoadingContent && !content) {
       setIsLoadingContent(true);
       fetchContent(contentfulClient, setContent)
         .then(() => setIsLoadingContent(false))
+        .catch(() => setIsLoadingContent(false))
     }
   }, [content, datasets]);
 
