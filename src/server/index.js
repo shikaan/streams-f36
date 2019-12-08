@@ -4,33 +4,16 @@ const {Sequelize} = require('sequelize');
 const {User} = require("./api/users/users.model");
 const {UsersRepository} = require("./api/users/users.repository");
 
+const {SelfService} = require("./api/self/self.service");
+const {SelfController} = require("./api/self/self.controller");
+
 const {SessionController} = require("./api/session/session.controller");
 const {SessionService} = require("./api/session/session.service");
 
 const {StatsController} = require("./api/stats/stats.controller");
 const {StatsService} = require("./api/stats/stats.service");
 
-const getSend = (request, response) => (status, message, payload, contentType = 'text/plain') => {
-  response.writeHead(status, message, {'Content-Type': contentType});
-  response.write(payload || `${status} - ${message}`);
-  response.end()
-};
-
-const errorHandler = (request, response) => (error) => {
-  response.statusCode = error.statusCode;
-
-  if (!error.statusCode) {
-    if (error.code === "ENOENT") {
-      response.statusCode = 404;
-    } else {
-      response.statusCode = 500;
-    }
-  }
-
-  response.write(error.message);
-  response.write('\n');
-  response.end()
-};
+const {getSuccessHandler, getThrowException, getBodyParser, getRouteHandler, getCookieHandler} = require('./handlers');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -48,8 +31,12 @@ const statsController = new StatsController(statsService);
  */
 User.init(User.DEFINITIONS, {sequelize});
 const usersRepository = new UsersRepository(User);
-// const usersService = new UsersService(usersRepository);
-// const usersController = new UsersController(usersService);
+
+/**
+ * Self Module Initialization
+ */
+const selfService = new SelfService(usersRepository);
+const selfController = new SelfController(selfService);
 
 /**
  * Session Module Initialization
@@ -61,39 +48,64 @@ const sessionController = new SessionController(sessionService);
  * @type {Server}
  */
 const server = createServer((request, response) => {
-  const send = getSend(request, response);
+    const send = getSuccessHandler(request, response);
+    const sendError = getThrowException(request, response);
+    const parseBody = getBodyParser(request);
+    const parseCookies = getCookieHandler(request, response);
+    const matchRoute = getRouteHandler(request, response);
 
-  // ALLOW CORS
-  if (request.headers.origin) {
-    response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
-  }
+    let matched = false;
 
-  if (request.url.match(StatsController.ROUTE_MATCHER)) {
-    const stream = statsController.getCPUDataStream();
+    // ALLOW CORS
+    if (request.headers.origin) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+    }
 
-    stream
-      .pipe(response)
-      .on('error', errorHandler(request, response))
-  } else if (request.url.match(SessionController.ROUTE_MATCHER)) {
-    const chunks = [];
-    request
-      .on('data', chunk => chunks.push(Buffer.from(chunk).toString('utf-8')))
-      .on('error', errorHandler(request, response))
-      .on('end', () => {
-        const formData = chunks.join();
+    matched = matchRoute(StatsController.ROUTE_MATCHER, 'GET', (request, response) => {
+      const stream = statsController.getCPUDataStream();
 
-        sessionController
-          .create(formData)
-          .then(session => {
-            send(201, 'Created', session)
-          })
-          .catch(errorHandler(request, response))
+      stream
+        .pipe(response)
+        .on('error', sendError)
+    });
 
-      })
-  } else {
-    send(404, 'Not Found')
-  }
-});
+    if (!matched) {
+      matched = matchRoute(SessionController.ROUTE_MATCHER, 'POST', () => {
+        parseBody((error, body) => {
+          if (error) {
+            return sendError(e);
+          }
+
+          sessionController
+            .create(body)
+            .then(session => {
+              send(201, 'Created', null, {'Set-Cookie': `auth_token=${session}; HttpOnly;`})
+            })
+            .catch(sendError)
+        });
+      });
+    }
+
+    if (!matched) {
+      matched = matchRoute(SelfController.ROUTE_MATCHER, 'GET', (request, response) => {
+        parseCookies((error, cookie) => {
+          if (error) {
+            return sendError(error);
+          }
+
+          selfController
+            .fetch(cookie['auth_token'])
+            .then(data => {
+              send(200, 'OK', JSON.stringify(data), {}, 'application/json');
+            });
+        })
+      });
+    }
+
+    if (!matched) {
+      send(404, 'Not Found')
+    }
+  });
 
 sequelize
   .sync()

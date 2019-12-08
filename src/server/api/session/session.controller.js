@@ -8,7 +8,11 @@ class SessionController {
     this.service = service;
   }
 
-  create(formData) {
+  /**
+   * @param formData
+   * @returns {Promise<string>}
+   */
+  async create(formData) {
     const {username, password} = parse(formData);
 
     if (!username) {
@@ -23,6 +27,6 @@ class SessionController {
   }
 }
 
-SessionController.ROUTE_MATCHER = /session/;
+SessionController.ROUTE_MATCHER = /api\/session/;
 
 exports.SessionController = SessionController;

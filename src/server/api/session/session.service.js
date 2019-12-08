@@ -8,6 +8,11 @@ class SessionService {
     this.usersRepository = repository;
   }
 
+  /**
+   * @param username
+   * @param password
+   * @returns {Promise<string>}
+   */
   async create(username, password) {
     const {dataValues: user} = await this.usersRepository.findBy('username', username);
 
