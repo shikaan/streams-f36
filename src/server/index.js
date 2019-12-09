@@ -118,7 +118,7 @@ const server = createServer((request, response) => {
 sequelize
   .sync()
   .then(() => {
-    server.listen(process.env.PORT, () => {
+    server.listen((process.env.PORT || 1234), () => {
       const {address, port} = server.address();
       console.log(`Server started at ${address}:${port}`)
     });
