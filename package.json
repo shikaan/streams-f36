@@ -1,14 +1,16 @@
 {
-  "name": "stream-ex",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/server/index.js",
+  "name": "stream-f36",
+  "description": "Experiments in Node streams and Forma 36",
   "scripts": {
     "start": "run-p start:client start:server",
     "start:client": "parcel serve --no-cache --port 8080 static/index.html",
-    "start:server": "damien ./src/server/index.js"
+    "start:server": "damien ./src/server/index.js",
+    "build": "run-p build:client build:server && npm run clean",
+    "build:client": "parcel build --no-cache --no-source-maps static/index.html -d dist/client",
+    "build:server": "parcel build -t node -d dist/server src/server/index.js",
+    "clean": "npm prune --production"
   },
-  "author": "",
+  "author": "Manuel Spagnolo <spagnolo.manu@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
@@ -22,19 +24,19 @@
     "parcel": "^1.12.4",
     "postcss-modules": "^1.4.1",
     "sass": "^1.23.7",
-    "typescript": "^3.7.3"
-  },
-  "dependencies": {
+    "typescript": "^3.7.3",
     "@contentful/forma-36-fcss": "0.0.32",
     "@contentful/forma-36-react-components": "^3.24.0",
     "@contentful/forma-36-tokens": "^0.4.5",
     "classnames": "^2.2.6",
     "contentful": "^7.10.0",
-    "jsonwebtoken": "^8.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "recharts": "^2.0.0-beta.1",
+    "recharts": "^2.0.0-beta.1"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "sequelize": "^5.21.2",
     "sqlite3": "^4.1.1"
   },
