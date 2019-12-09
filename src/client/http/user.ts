@@ -22,7 +22,13 @@ export default class UserHTTPClient {
         mode: 'cors',
         credentials: 'include'
       }
-    )
+    ).then(response => {
+      if (response.status > 299) {
+        throw Object.assign(new Error, response.json())
+      }
+
+      return response.text()
+    })
   }
 
   fetch() {

@@ -1,5 +1,8 @@
 FROM node:12 AS builder
 
+ENV PORT 80
+ENV NGINX_PORT ${PORT}
+
 COPY . /usr/app
 WORKDIR /usr/app
 
