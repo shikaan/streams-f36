@@ -18,7 +18,6 @@ const Login = ({className, userClient = new UserHTTPClient()}: LoginProps) => {
   const history = useHistory();
 
   function performLogin() {
-    debugger
     return userClient.login(username, password)
       .then(() => history.push("/app"))
       .catch(() => Notification.warning('An error occurred'))

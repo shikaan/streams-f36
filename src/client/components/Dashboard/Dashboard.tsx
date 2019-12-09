@@ -5,11 +5,12 @@ import {Illustration} from "@contentful/forma-36-react-components";
 import {pushift} from "../../utils";
 import {CONTENT_TYPE, DATASET_SIZE, MetricsType} from "./constants";
 
-import Graph from './Graph';
-import Sidebar from "./Sidebar";
 import StatsHTTPClient, {Dataset} from "../../http/stats";
 import ContentfulHTTPClient from "../../http/contentful";
 import {ContentfulClientApi} from "contentful";
+
+const Graph = React.lazy(() => import('./Graph'));
+const Sidebar = React.lazy(() => import("./Sidebar"));
 
 const fetchStats = async (client: StatsHTTPClient, datasets: Array<Dataset>, setDatasets: Function) => {
   // We cannot access the updated datasets upon every setDataset
