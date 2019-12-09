@@ -14,6 +14,7 @@
     "@types/classnames": "^2.2.9",
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.15",
+    "@types/react-router-dom": "^5.1.3",
     "@types/recharts": "^1.8.3",
     "autoprefixer": "^9.7.3",
     "damien": "^1.0.3",
@@ -32,6 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
     "recharts": "^2.0.0-beta.1",
     "sequelize": "^5.21.2",
     "sqlite3": "^4.1.1"

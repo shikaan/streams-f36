@@ -1,13 +1,3 @@
-/* TODO: understand wtf is wrong with webstorm here */
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-base.css";
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-stack.css";
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-weight.css";
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-size.css";
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/typography/letter-spacing.css";
-@import "../../../../node_modules/@contentful/forma-36-tokens/dist/css/spacing.css";
-
-/* TODO: use variables */
-
 .ViewFolder {
   &:first-child {
     .ViewFolder__header {

@@ -17,7 +17,7 @@ class SelfController {
   }
 }
 
-SelfController.ROUTE_MATCHER = /api\/self/;
+SelfController.ROUTE_MATCHER = /api(\/+)self/;
 SelfController.SECRET = process.env.JWT_SECRET || 'secret';
 
 exports.SelfController = SelfController;

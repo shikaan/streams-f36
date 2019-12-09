@@ -59,6 +59,14 @@ const server = createServer((request, response) => {
     // ALLOW CORS
     if (request.headers.origin) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+      response.setHeader('Access-Control-Allow-Credentials', true);
+    }
+
+    if(request.method === 'OPTIONS') {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+      response.setHeader('Access-Control-Allow-Methods', 'POST');
+
+      return send(204)
     }
 
     matched = matchRoute(StatsController.ROUTE_MATCHER, 'GET', (request, response) => {
@@ -87,7 +95,7 @@ const server = createServer((request, response) => {
     }
 
     if (!matched) {
-      matched = matchRoute(SelfController.ROUTE_MATCHER, 'GET', (request, response) => {
+      matched = matchRoute(SelfController.ROUTE_MATCHER, 'GET', () => {
         parseCookies((error, cookie) => {
           if (error) {
             return sendError(error);

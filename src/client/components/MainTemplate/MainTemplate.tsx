@@ -1,24 +1,24 @@
 import React from 'react';
 import cn from 'classnames';
 
-import Dashboard from "../Dashboard";
 import TopBar from "../TopBar";
 
 const styles = require('./MainTemplate.scss');
 
 interface MainTemplateProps {
-  className?: string
+  className?: string,
+  children: React.ReactNode
 }
 
-const MainTemplate = ({className}: MainTemplateProps) => (
-  <div className={cn(styles['MainTemplate'], className)}>
-    <div className={cn(styles['MainTemplate__top-bar'], className)}>
+const MainTemplate = ({className, children}: MainTemplateProps) => (
+  <main className={cn(styles['MainTemplate'], className)}>
+    <header className={cn(styles['MainTemplate__top-bar'], className)}>
       <TopBar/>
-    </div>
-    <div className={cn(styles['MainTemplate__page-wrapper'], className)}>
-      <Dashboard/>
-    </div>
-  </div>
+    </header>
+    <section className={cn(styles['MainTemplate__page-wrapper'], className)}>
+      {children}
+    </section>
+  </main>
 );
 
 export default MainTemplate;

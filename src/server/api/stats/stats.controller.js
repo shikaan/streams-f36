@@ -39,7 +39,7 @@ class StatsController {
   }
 }
 
-StatsController.ROUTE_MATCHER = /api\/stats/;
+StatsController.ROUTE_MATCHER = /api(\/+)stats/;
 StatsController.REFRESH_RATE = 2000;
 
 exports.StatsController = StatsController;

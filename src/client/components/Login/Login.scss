@@ -1,0 +1,23 @@
+.Login {
+  margin: auto;
+  width: 40rem;
+
+  &__header {
+    --headline-font-size: 3em;
+    --sub-headline-font-size: var(--font-size-3xl);
+
+    text-align: center;
+    padding: var(--spacing-4xl);
+
+    &-headline {
+      font-size: var(--headline-font-size);
+    }
+
+    &-sub-headline {
+      font-size: var(--sub-headline-font-size);
+      font-weight: var(--font-weight-normal);
+    }
+  }
+
+
+}

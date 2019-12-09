@@ -27,6 +27,6 @@ class SessionController {
   }
 }
 
-SessionController.ROUTE_MATCHER = /api\/session/;
+SessionController.ROUTE_MATCHER = /api(\/+)session/;
 
 exports.SessionController = SessionController;
