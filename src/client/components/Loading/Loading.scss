@@ -1,0 +1,23 @@
+.Loading {
+  height: 100vh;
+  width: 100vw;
+  background: var(--color-element-dark);
+
+  position: fixed;
+  display: flex;
+  align-items: center;
+
+  &__wrapper {
+    flex: none;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__text {
+    padding: var(--spacing-l);
+    color: white;
+  }
+}
+

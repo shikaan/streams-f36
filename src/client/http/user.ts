@@ -14,8 +14,6 @@ export default class UserHTTPClient {
     params.append('username', username);
     params.append('password', password);
 
-    console.log(params.toString());
-
     return fetch(
       `${process.env.API_URL}session`,
       {
