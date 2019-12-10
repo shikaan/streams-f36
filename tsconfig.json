@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./src/client",
+    "rootDir": "./src",
     "allowJs": false /* Allow javascript files to be compiled. */,
     "checkJs": false /* Report errors in .js files. */,
     "declaration": true /* Generates corresponding '.d.ts' file. */,
@@ -23,5 +23,5 @@
       "dom"
     ]
   },
-  "include": ["./src/client"]
+  "include": ["./src"]
 }

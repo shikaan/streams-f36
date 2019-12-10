@@ -2,13 +2,13 @@
   "name": "stream-f36",
   "description": "Experiments in Node streams and Forma 36",
   "scripts": {
+    "postinstall": "npm install sqlite3",
     "start": "run-p start:client start:server",
     "start:client": "parcel serve --no-cache --port 8080 static/index.html",
-    "start:server": "damien ./src/server/index.js",
-    "build": "run-p build:client build:server && npm run clean",
-    "build:client": "parcel build --no-cache --no-source-maps static/index.html -d dist/client",
-    "build:server": "parcel build -t node -d dist/server src/server/index.js",
-    "clean": "npm prune --production"
+    "start:server": "damien server/index.js",
+    "_build": "npm run build:client && npm run build:server",
+    "build:client": "parcel build --no-cache --no-source-maps static/index.html -d public",
+    "build:server": "parcel build --no-source-maps -t node -d api -o server server/index.js"
   },
   "author": "Manuel Spagnolo <spagnolo.manu@gmail.com>",
   "license": "ISC",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.0.2",
     "sequelize": "^5.21.2",
     "sqlite3": "^4.1.1"
   },

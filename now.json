@@ -1,0 +1,12 @@
+{
+  "name": "stream",
+  "version": 2,
+  "build": {
+    "env": {
+      "API_URL": "/api/",
+      "CONTENTFUL_SPACE": "aan93utc2krm",
+      "CONTENTFUL_ACCESS_TOKEN": "qMAlzIovhn6kTkALnnx4KyxEMQd-RpOEPcZcDPvzsFI",
+      "NODEJS_HELPERS": "1"
+    }
+  }
+}
