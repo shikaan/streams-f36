@@ -1,11 +1,11 @@
-const {bodyParser, getThrowException, getSuccessHandler} = require("./_utils");
+const {bodyParser, getThrowException, getSuccessHandler} = require("../_utils");
 
-const {UsersRepository} = require("./users/users.repository");
-const {User} = require("./users/users.model");
-const {SessionController} = require("./session/session.controller");
-const {SessionService} = require("./session/session.service");
+const {UsersRepository} = require("../users/users.repository");
+const {User} = require("../users/users.model");
+const {SessionController} = require("./session.controller");
+const {SessionService} = require("./session.service");
 
-const {config} = require('./_config');
+const {config} = require('../_config');
 
 User.init(User.DEFINITIONS, {sequelize: config.database});
 const usersRepository = new UsersRepository(User);

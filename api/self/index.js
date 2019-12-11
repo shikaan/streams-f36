@@ -1,10 +1,10 @@
-const {SelfController} = require("./self/self.controller");
-const {SelfService} = require("./self/self.service");
-const {UsersRepository} = require("./users/users.repository");
-const {User} = require("./users/users.model");
+const {SelfController} = require("./self.controller");
+const {SelfService} = require("./self.service");
+const {UsersRepository} = require("../users/users.repository");
+const {User} = require("../users/users.model");
 
-const {cookieParser, getSuccessHandler, getThrowException} = require("./_utils");
-const {config} = require('./_config');
+const {cookieParser, getSuccessHandler, getThrowException} = require("../_utils");
+const {config} = require('../_config');
 
 User.init(User.DEFINITIONS, {sequelize: config.database});
 const usersRepository = new UsersRepository(User);

@@ -1,7 +1,7 @@
-const {StatsController} = require("./stats/stats.controller");
-const {StatsService} = require("./stats/stats.service");
+const {StatsController} = require("./stats.controller");
+const {StatsService} = require("./stats.service");
 
-const {getThrowException} = require("./_utils");
+const {getThrowException} = require("../_utils");
 
 /**
  * Stats Module Initialization
@@ -13,7 +13,7 @@ module.exports = (request, response) => {
   const sendError = getThrowException(request, response);
   const stream = statsController.getCPUDataStream();
 
-  response.setHeader('content-type', 'application/octet-stream');
-
-  stream.pipe(response)
+  stream
+    .pipe(response)
+    .on('error', sendError)
 };
