@@ -8,4 +8,4 @@ RUN npm i -g damien
 
 EXPOSE 1234
 
-ENTRYPOINT damien ./src/server/index.js
+ENTRYPOINT damien ./api/server.js

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: Server.Dockerfile
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "1234:1234"
+  frontend:
+    build:
+      dockerfile: Client.Dockerfile
+      context: .
+    ports:
+      - "80:80"

@@ -1,12 +1,15 @@
 FROM node:12 AS builder
 
-ENV PORT 80
-ENV NGINX_PORT ${PORT}
-
-COPY docker /usr/app
+COPY . /usr/app
 WORKDIR /usr/app
 
-RUN npm i && npm run build:client && npm run clean
+RUN npm i && npm run build:client
+RUN rm -rf node_modules
 
 FROM nginx
-COPY --from=builder /usr/app/dist/client /usr/share/nginx/html
+
+ARG PORT=80
+
+ENV NGINX_PORT ${PORT}
+
+COPY --from=builder /usr/app/public /usr/share/nginx/html

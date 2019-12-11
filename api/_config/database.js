@@ -4,7 +4,7 @@ const {environment} = require('./environment');
 exports.connection = environment.NODE_ENV === 'local'
   ? new Sequelize({
       dialect: 'sqlite',
-      storage: 'db/database.sqlite',
+      storage: 'database.sqlite',
       dialectModule: require('sqlite3')
   })
   : new Sequelize(
