@@ -1,5 +1,7 @@
-const getExceptionHandler = (request, response) => (error) => {
-  response.statusCode = error.statusCode;
+const getExceptionHandler = (request, response) => (error = {}) => {
+  if (response.headersSent) {
+    return;
+  }
 
   if (!error.statusCode) {
     if (error.code === "ENOENT") {
@@ -9,8 +11,9 @@ const getExceptionHandler = (request, response) => (error) => {
     }
   }
 
-  response.write(error.message);
-  response.write('\n');
+  response.statusCode = error.statusCode || 500;
+
+  response.write(error.message || 'Unexpected error');
   response.end()
 };
 

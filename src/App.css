@@ -1,7 +1,7 @@
-@import '../../node_modules/@contentful/forma-36-tokens/dist/css/index.css';
-@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-base.css";
-@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-stack.css";
-@import "../../node_modules/@contentful/forma-36-tokens/dist/css/typography/line-height.css";
+@import '../node_modules/@contentful/forma-36-tokens/dist/css/index.css';
+@import "../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-base.css";
+@import "../node_modules/@contentful/forma-36-tokens/dist/css/typography/font-stack.css";
+@import "../node_modules/@contentful/forma-36-tokens/dist/css/typography/line-height.css";
 
 * {
     box-sizing: border-box;

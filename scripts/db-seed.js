@@ -1,10 +1,7 @@
-const {Sequelize} = require('sequelize');
-const {User} = require('../src/server/api/users/users.model');
+const {User} = require('../api/users/users.model');
+const {config} = require('../api/_config');
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './db/data.db'
-});
+const sequelize = config.database;
 
 User.init(User.DEFINITIONS, {sequelize, modelName: 'user'});
 

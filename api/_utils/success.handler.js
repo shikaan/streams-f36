@@ -1,4 +1,7 @@
 const getSuccessHandler = (request, response) => (status, message, body, headers, contentType = 'text/plain') => {
+  if (response.headersSent) {
+    return;
+  }
 
   if (headers) {
     for (const [header, content] of Object.entries(headers)) {

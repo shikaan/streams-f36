@@ -1,4 +1,4 @@
-const getCookieHandler = (request, response) => callback => {
+const parse = (request, response) => new Promise((resolve, reject) => {
   try {
     const cookieStrings = request.headers['cookie'].split(';') || [];
 
@@ -10,10 +10,10 @@ const getCookieHandler = (request, response) => callback => {
       return cookies;
     }, {});
 
-    callback(false, cookies)
+    resolve(cookies)
   } catch (e) {
-    callback(e, null)
+    reject(e)
   }
-};
+});
 
-exports.getCookieHandler = getCookieHandler;
+exports.parse = parse;
